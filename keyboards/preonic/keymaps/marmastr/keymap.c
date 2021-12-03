@@ -295,23 +295,59 @@ bool music_mask_user(uint16_t keycode) {
   }
 }
 
+//Backlight code below
+//Set RGB backlight to solid color
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
     case _RAISE:
-        rgblight_setrgb (0x32,  0x32, 0x96);
+        rgblight_sethsv (HSV_ORANGE);
         break;
     case _LOWER:
-        rgblight_setrgb (0x32,  0x96, 0x32);
+        rgblight_sethsv (HSV_PURPLE);
         break;
     case _BACKLIT:
-        rgblight_setrgb (0x00,  0x96, 0x96);
+        rgblight_sethsv (HSV_BLUE);
         break;
     case _ADJUST:
-        rgblight_setrgb (0x96,  0x96, 0x00);
+        rgblight_sethsv (HSV_SPRINGGREEN);
         break;
     default: //  for any other layers, or the default layer
-        rgblight_setrgb (0x96,  0x00, 0x00);
+        rgblight_sethsv (HSV_RED);
         break;
     }
   return state;
 }
+//Define light layers
+// Light LED 6 & 7 in orange when caps lock is active. Hard to ignore!
+const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {6, 2, HSV_YELLOW},       // Light 2 LEDs, starting with LED 6
+);
+// etc..
+// Now define the array of layers. Later layers take precedence
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    my_capslock_layer/*,
+    my_layer1_layer,    // Overrides caps lock layer
+    my_layer2_layer,    // Overrides other layers
+    my_layer3_layer     // Overrides other layers*/
+);
+
+void keyboard_post_init_user(void) {
+    // Enable the LED layers
+    rgblight_layers = my_rgb_layers;
+}
+bool led_update_user(led_t led_state) {
+    rgblight_set_layer_state(0, led_state.caps_lock);
+    return true;
+}
+/*
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+    rgblight_set_layer_state(1, layer_state_cmp(state, _DVORAK));
+    return state;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    rgblight_set_layer_state(2, layer_state_cmp(state, _FN));
+    rgblight_set_layer_state(3, layer_state_cmp(state, _ADJUST));
+    return state;
+}
+*/
