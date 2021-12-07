@@ -342,11 +342,11 @@ const rgblight_segment_t PROGMEM adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 // etc..
 // Now define the array of layers. Later layers take precedence
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    capslock_layer,
     colemak_layer,
-    lower_layer,    // Overrides caps lock layer
+    lower_layer,    // Overrides colemak layer
     raise_layer,    // Overrides other layers
-    adjust_layer     // Overrides other layers
+    adjust_layer,     // Overrides other layers
+    capslock_layer     // Overrides other layers
 );
 
 void keyboard_post_init_user(void) {
