@@ -124,7 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Reset| Debug|      |      |      |      |TermOf|TermOn|      |      |  Del |
+ * |      | Reset| Debug|      |      |      |      |      |      |      |      |  Del |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |Aud cy|Aud on|AudOff|AGnorm|AGswap|Qwerty|Colemk|      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -135,7 +135,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_ADJUST] = LAYOUT_ortho_5x12(
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-  _______, RESET,   DEBUG,   _______, _______, _______, _______, TERM_ON, TERM_OFF,_______, _______, KC_DEL,
+  _______, RESET,   DEBUG,   _______, _______, _______, _______, _______, _______,_______, _______, KC_DEL,
   _______, _______, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, _______,  _______, _______,
   _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
@@ -147,7 +147,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
  * |        | Toggle |RGB TEST|        |        |        |        |        |        |        |        |        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        | PLAIN  |BREATHE | SWIRL  | SNAKE  | KNIGHT |  XMAS  |GRADIENT|TWINKLE |        |        |        |
+ * |        | PLAIN  |BREATHE | SWIRL  |  XMAS  |        |        |        |        |        |        |        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
  * |        |        |        |        |        |        |        |        |        |        |        |        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
@@ -157,7 +157,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_BACKLIT] = LAYOUT_ortho_5x12(
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, RGB_TOG, RGB_MODE_RGBTEST, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, RGB_MODE_PLAIN, RGB_MODE_BREATHE, RGB_MODE_SWIRL, RGB_MODE_SNAKE, RGB_MODE_KNIGHT, RGB_MODE_XMAS, RGB_MODE_GRADIENT, RGB_MODE_TWINKLE, _______, _______, _______,
+  _______, RGB_MODE_PLAIN, RGB_MODE_BREATHE, RGB_MODE_SWIRL, RGB_MODE_XMAS, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, RGB_HUD, RGB_SAD, RGB_VAD, _______
 )
@@ -201,9 +201,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           break;
         case BACKLIT:
           if (record->event.pressed) {
-            layer_on(_BACKLIT);
-          } else {
-            layer_off(_BACKLIT);
+            layer_invert(_BACKLIT);
+          //} else {
+            //layer_off(_BACKLIT);
           }
           return false;
           break;
@@ -320,35 +320,53 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 */
 //Define light layers
 // Light LED 6 & 7 in orange when caps lock is active. Hard to ignore!
-const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+const rgblight_segment_t PROGMEM capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {6, 2, HSV_YELLOW}       // Light 2 LEDs, starting with LED 6
+);
+//Lights for COLEMAK
+const rgblight_segment_t PROGMEM colemak_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 9, HSV_RED}       // Light 9 LEDs, starting with LED 0
+);
+//Lights for LOWER
+const rgblight_segment_t PROGMEM lower_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 9, HSV_PURPLE}       // Light 9 LEDs, starting with LED 0
+);
+//Lights for RAISE
+const rgblight_segment_t PROGMEM raise_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 9, HSV_ORANGE}       // Light 9 LEDs, starting with LED 0
+);
+//Lights for ADJUST
+const rgblight_segment_t PROGMEM adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 9, HSV_GREEN}       // Light 9 LEDs, starting with LED 0
 );
 // etc..
 // Now define the array of layers. Later layers take precedence
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    my_capslock_layer/*,
-    my_layer1_layer,    // Overrides caps lock layer
-    my_layer2_layer,    // Overrides other layers
-    my_layer3_layer     // Overrides other layers*/
+const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    capslock_layer,
+    colemak_layer,
+    lower_layer,    // Overrides caps lock layer
+    raise_layer,    // Overrides other layers
+    adjust_layer     // Overrides other layers
 );
 
 void keyboard_post_init_user(void) {
     // Enable the LED layers
-    rgblight_layers = my_rgb_layers;
+    rgblight_layers = rgb_layers;
 }
 bool led_update_user(led_t led_state) {
     rgblight_set_layer_state(0, led_state.caps_lock);
     return true;
 }
-/*
+
 layer_state_t default_layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(1, layer_state_cmp(state, _DVORAK));
+    rgblight_set_layer_state(1, layer_state_cmp(state, _COLEMAK));
     return state;
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(2, layer_state_cmp(state, _FN));
-    rgblight_set_layer_state(3, layer_state_cmp(state, _ADJUST));
+    rgblight_set_layer_state(2, layer_state_cmp(state, _LOWER));
+    rgblight_set_layer_state(3, layer_state_cmp(state, _RAISE));
+    rgblight_set_layer_state(4, layer_state_cmp(state, _ADJUST));
     return state;
 }
-*/
+
