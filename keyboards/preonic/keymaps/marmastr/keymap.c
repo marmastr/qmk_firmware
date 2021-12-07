@@ -319,10 +319,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 */
 //Define light layers
-// Light LED 6 & 7 in orange when caps lock is active. Hard to ignore!
-const rgblight_segment_t PROGMEM capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {6, 2, HSV_YELLOW}       // Light 2 LEDs, starting with LED 6
-);
 //Lights for COLEMAK
 const rgblight_segment_t PROGMEM colemak_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, 9, HSV_RED}       // Light 9 LEDs, starting with LED 0
@@ -339,6 +335,10 @@ const rgblight_segment_t PROGMEM raise_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 const rgblight_segment_t PROGMEM adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, 9, HSV_GREEN}       // Light 9 LEDs, starting with LED 0
 );
+// Light LED 6 & 7 in orange when caps lock is active. Hard to ignore!
+const rgblight_segment_t PROGMEM capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {6, 2, HSV_YELLOW}       // Light 2 LEDs, starting with LED 6
+);
 // etc..
 // Now define the array of layers. Later layers take precedence
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
@@ -354,19 +354,19 @@ void keyboard_post_init_user(void) {
     rgblight_layers = rgb_layers;
 }
 bool led_update_user(led_t led_state) {
-    rgblight_set_layer_state(0, led_state.caps_lock);
+    rgblight_set_layer_state(4, led_state.caps_lock);
     return true;
 }
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(1, layer_state_cmp(state, _COLEMAK));
+    rgblight_set_layer_state(0, layer_state_cmp(state, _COLEMAK));
     return state;
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(2, layer_state_cmp(state, _LOWER));
-    rgblight_set_layer_state(3, layer_state_cmp(state, _RAISE));
-    rgblight_set_layer_state(4, layer_state_cmp(state, _ADJUST));
+    rgblight_set_layer_state(1, layer_state_cmp(state, _LOWER));
+    rgblight_set_layer_state(2, layer_state_cmp(state, _RAISE));
+    rgblight_set_layer_state(3, layer_state_cmp(state, _ADJUST));
     return state;
 }
 
