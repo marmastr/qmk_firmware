@@ -105,19 +105,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   `  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Del  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Del  |      |      |Scrl_U|  M_1 |      |      |   -  |   =  |   [  |   ]  |  \   |
+ * | Del  |      |      |      |      |      |      |   -  |   =  |   [  |   ]  |  \   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |Scrl_D|  M_2 |      |      |ISO # |ISO / | Pg Up| Pg Dn|      |
+ * |      |      |      |      |      |      |      |ISO # |ISO / | Pg Up| Pg Dn|      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      | Next | Vol- | Vol+ | Play |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_ortho_5x12(
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,
-  KC_DEL,  _______,   _______,   KC_MS_WH_UP,   KC_MS_BTN1,   _______,   _______,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS,
-  _______, _______,   _______,   KC_MS_WH_DOWN,   KC_MS_BTN2,  _______,  _______,  KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, KC_MS_LEFT, KC_MS_DOWN, KC_MS_UP, KC_MS_RIGHT
+  KC_DEL,  _______,   _______,   _______,   _______,   _______,   _______,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS,
+  _______, _______,   _______,   _______,   _______,  _______,  _______,  KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 /* Adjust (Lower + Raise)
@@ -161,8 +161,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, RGB_HUD, RGB_SAD, RGB_VAD, _______
 )
-
-
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -201,9 +199,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           break;
         case BACKLIT:
           if (record->event.pressed) {
-            layer_invert(_BACKLIT);
-          //} else {
-            //layer_off(_BACKLIT);
+            layer_on(_BACKLIT);
+          } else {
+            layer_off(_BACKLIT);
           }
           return false;
           break;
