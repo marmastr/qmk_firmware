@@ -50,3 +50,4 @@
 // Activate RGB light layers
 #define RGBLIGHT_LAYERS
 #undef RGBLIGHT_ANIMATIONS
+#define AUDIO_CLICKY
