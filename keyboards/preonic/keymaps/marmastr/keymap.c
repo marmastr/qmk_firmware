@@ -261,11 +261,11 @@ const rgblight_segment_t PROGMEM capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {6, 2, HSV_YELLOW}       // Light 2 LEDs, starting with LED 6
 );
 // etc..
+
 // Now define the array of layers. Later layers take precedence
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     capslock_layer    // Overrides other layers
 );
-
 void keyboard_post_init_user(void) {
     // Enable the LED layers
     rgblight_layers = rgb_layers;
